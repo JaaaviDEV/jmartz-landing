@@ -9,10 +9,9 @@ const CONFIG = {
     TYPING_DELAY: 2000,
     PARTICLE_INTERVAL: 800,
     ROLES: [
-        'Desarrollador Full Stack',
-        'Especialista en React',
-        'Arquitecto de Software',
-        'DevOps Engineer',
+        'Desarrollador Java',
+        'Game Developer en Unity',
+        'Diseñador de Software',
         'UI/UX Developer'
     ]
 };
