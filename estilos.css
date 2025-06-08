@@ -201,7 +201,7 @@ nav.scrolled {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 2rem 8rem 2rem; /* Más padding bottom para móvil */
+    padding: 5rem 2rem 5rem 2rem; /* Padding normal para desktop */
     position: relative;
     z-index: 1;
 }
@@ -299,7 +299,7 @@ nav.scrolled {
 
 .scroll-hint {
     position: absolute;
-    bottom: 2rem;
+    bottom: 2rem; /* Posición normal para desktop */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
