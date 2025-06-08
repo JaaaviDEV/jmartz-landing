@@ -201,9 +201,9 @@ nav.scrolled {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 2rem;
+    padding: 0 2rem 5rem 2rem; /* Más padding bottom */
     position: relative;
-    margin-bottom: 2rem; /* Añadir margen para evitar solapamiento */
+    z-index: 1; /* Asegurar que esté por debajo */
 }
 
 .hero-content {
@@ -213,6 +213,8 @@ nav.scrolled {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-info {
@@ -307,12 +309,14 @@ nav.scrolled {
     color: var(--text-muted);
     font-size: 0.9rem;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
 }
 
 .scroll-hint.hidden {
     opacity: 0;
-    pointer-events: none;
+    transform: translateX(-50%) translateY(10px);
 }
 
 .scroll-arrow {
@@ -338,6 +342,18 @@ nav.scrolled {
 @keyframes scrollHint {
     0%, 100% { opacity: 0.5; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(5px); }
+}
+
+/* Mejorar visibilidad en móvil */
+@media (max-width: 768px) {
+    .scroll-hint {
+        bottom: 3rem;
+        font-size: 0.8rem;
+    }
+    
+    .scroll-arrow {
+        height: 25px;
+    }
 }
 
 /* Buttons */
@@ -428,7 +444,9 @@ nav.scrolled {
     padding: 5rem 0;
     background: var(--bg-secondary);
     position: relative;
-    margin-top: 0; /* Asegurar que no hay margen superior */
+    z-index: 2; /* Asegurar que esté por encima del hero */
+    margin-top: -3rem; /* Overlap controlado */
+    border-radius: 2rem 2rem 0 0; /* Bordes redondeados arriba */
 }
 
 .skills-grid {
