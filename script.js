@@ -9,10 +9,11 @@ const CONFIG = {
     TYPING_DELAY: 2000,
     PARTICLE_INTERVAL: 800,
     ROLES: [
-        'Desarrollador Java',
+        'Desarrollador Software',
         'Game Developer en Unity',
-        'Diseñador de Software',
-        'UI/UX Developer'
+        'Diseñador Software',
+        'UI/UX Developer',
+        'Músico & Developer'
     ]
 };
 
@@ -270,6 +271,7 @@ const navigation = {
     setupScrollEffects() {
         const navbar = dom.get('#navbar');
         const scrollIndicator = dom.get('.scroll-indicator');
+        const scrollHint = dom.get('.scroll-hint');
         
         const handleScroll = utils.throttle(() => {
             const scrollTop = window.pageYOffset;
@@ -281,15 +283,22 @@ const navigation = {
                 navbar.classList.remove('scrolled');
             }
             
+            // Ocultar scroll hint al hacer scroll
+            if (scrollTop > 50 && scrollHint) {
+                scrollHint.classList.add('hidden');
+            } else if (scrollTop <= 50 && scrollHint) {
+                scrollHint.classList.remove('hidden');
+            }
+            
             // Indicador de progreso
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercentage = Math.min((scrollTop / scrollHeight) * 100, 100);
             scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
             
-            // Efecto parallax en el hero
+            // Efecto parallax en el hero (solo si está visible)
             const hero = dom.get('.hero-content');
             if (hero && scrollTop < window.innerHeight) {
-                const speed = 0.5;
+                const speed = 0.3; // Reducir velocidad para menos efecto
                 hero.style.transform = `translateY(${scrollTop * speed}px)`;
             }
         }, 16); // ~60fps
