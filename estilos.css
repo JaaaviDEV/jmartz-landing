@@ -201,9 +201,9 @@ nav.scrolled {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 2rem 5rem 2rem; /* Más padding bottom */
+    padding: 0 2rem 8rem 2rem; /* Más padding bottom para móvil */
     position: relative;
-    z-index: 1; /* Asegurar que esté por debajo */
+    z-index: 1;
 }
 
 .hero-content {
@@ -445,7 +445,7 @@ nav.scrolled {
     background: var(--bg-secondary);
     position: relative;
     z-index: 2; /* Asegurar que esté por encima del hero */
-    margin-top: -3rem; /* Overlap controlado */
+    margin-top: -2rem; /* Overlap controlado para desktop */
     border-radius: 2rem 2rem 0 0; /* Bordes redondeados arriba */
 }
 
