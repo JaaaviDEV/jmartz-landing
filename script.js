@@ -273,8 +273,12 @@ const navigation = {
         const scrollIndicator = dom.get('.scroll-indicator');
         const scrollHint = dom.get('.scroll-hint');
         
+        // Detectar si es móvil
+        const isMobile = window.innerWidth <= 768;
+        const scrollThreshold = isMobile ? 100 : 50; // Mayor threshold en móvil
+        
         const handleScroll = utils.throttle(() => {
-            const scrollTop = window.pageYOffset;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
             // Efecto del navbar
             if (scrollTop > CONFIG.SCROLL_THRESHOLD) {
@@ -283,27 +287,59 @@ const navigation = {
                 navbar.classList.remove('scrolled');
             }
             
-            // Ocultar scroll hint al hacer scroll
-            if (scrollTop > 50 && scrollHint) {
-                scrollHint.classList.add('hidden');
-            } else if (scrollTop <= 50 && scrollHint) {
-                scrollHint.classList.remove('hidden');
+            // Ocultar scroll hint al hacer scroll (mejorado para móvil)
+            if (scrollHint) {
+                if (scrollTop > scrollThreshold) {
+                    scrollHint.classList.add('hidden');
+                } else {
+                    scrollHint.classList.remove('hidden');
+                }
             }
             
             // Indicador de progreso
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercentage = Math.min((scrollTop / scrollHeight) * 100, 100);
-            scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
-            
-            // Efecto parallax en el hero (solo si está visible)
-            const hero = dom.get('.hero-content');
-            if (hero && scrollTop < window.innerHeight) {
-                const speed = 0.3; // Reducir velocidad para menos efecto
-                hero.style.transform = `translateY(${scrollTop * speed}px)`;
+            if (scrollIndicator) {
+                scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
             }
-        }, 16); // ~60fps
+            
+        }, isMobile ? 32 : 16); // Menos frecuente en móvil para mejor rendimiento
 
+        // Eventos de scroll con passive para mejor rendimiento en móvil
         window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Evento adicional para móvil: touchmove
+        if (isMobile) {
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            document.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                const deltaY = touchStartY - touchY;
+                
+                // Si el usuario está scrolleando hacia abajo
+                if (deltaY > 30 && scrollHint) {
+                    scrollHint.classList.add('hidden');
+                }
+            }, { passive: true });
+            
+            // Auto-ocultar después de 5 segundos en móvil
+            setTimeout(() => {
+                if (scrollHint && window.pageYOffset < scrollThreshold) {
+                    scrollHint.classList.add('hidden');
+                }
+            }, 5000);
+        }
+        
+        // También ocultar si se hace clic en cualquier parte
+        document.addEventListener('click', () => {
+            if (scrollHint) {
+                scrollHint.classList.add('hidden');
+            }
+        }, { once: true, passive: true });
     }
 };
 
